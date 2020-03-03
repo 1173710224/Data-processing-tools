@@ -1,0 +1,25 @@
+library(mgcv)      #加载mgcv软件包，因为gam函数在这个包里
+Data <- read.delim("fitrawdata.txt")     #读取txt数据，存到Data变量中
+Data <- as.matrix(Data)     #转为矩阵形式
+#查看Data数据：Data，查看第2列：Data[,2]，第2行：Data[2,]<br>
+DONATION_AMOUNT = Data[,7]
+for(i in 1:2109){
+if (DONATION_AMOUNT[i] != 0){
+DONATION_AMOUNT[i] = log(DONATION_AMOUNT[i])
+}
+}
+names = colnames(Data)#提取列名
+for(i in 1:6){
+	result <- gam(Data[,i]~s(DONATION_AMOUNT))     #此时，Adult为相应变量，Day为解释变量
+	print(summary(result))      #输出计算结果
+	plot(result,xlab=names[i])
+	print('press enter to continue!')
+	print('0 + enter for break!')
+	x = scan()
+	if(length(x) == 0){
+	next
+}
+	if (x[1] == 0){
+	break
+} 
+}
